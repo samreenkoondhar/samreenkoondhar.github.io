@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samreen Koondhar — Backend Engineer</title>
+<style>
+  :root{
+    --ink:#0B1120;
+    --ink-2:#0F1830;
+    --panel:#111B33;
+    --paper:#EDE7D9;
+    --gold:#D4A24C;
+    --gold-dim:#8B6F3A;
+    --green:#4CAF7D;
+    --line:rgba(237,231,217,0.12);
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:var(--sans);
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 6vw;
+    background:rgba(11,17,32,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .logo{
+    font-family:var(--mono);
+    font-size:15px;
+    color:var(--gold);
+    letter-spacing:1px;
+  }
+  .logo span{color:var(--paper);}
+  .nav-links{display:flex; gap:36px; list-style:none;}
+  .nav-links a{
+    color:var(--paper); text-decoration:none; font-size:14px;
+    font-family:var(--mono); letter-spacing:0.5px; opacity:0.75;
+    position:relative; padding-bottom:4px; transition:opacity 0.25s;
+  }
+  .nav-links a::after{
+    content:''; position:absolute; left:0; bottom:0; width:0; height:1px;
+    background:var(--gold); transition:width 0.3s ease;
+  }
+  .nav-links a:hover{opacity:1;}
+  .nav-links a:hover::after{width:100%;}
+
+  /* ---------- HERO ---------- */
+  header{
+    min-height:100vh;
+    display:flex; align-items:center;
+    padding:0 6vw;
+    position:relative;
+    background:
+      radial-gradient(ellipse 700px 500px at 85% 20%, rgba(212,162,76,0.10), transparent 60%),
+      radial-gradient(ellipse 600px 600px at 10% 80%, rgba(76,175,125,0.07), transparent 60%);
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1.3fr 1fr; gap:60px;
+    width:100%; align-items:center; padding-top:80px;
+  }
+  .eyebrow{
+    font-family:var(--mono); color:var(--green); font-size:13px;
+    letter-spacing:2px; text-transform:uppercase;
+    display:flex; align-items:center; gap:10px;
+    opacity:0; animation:fadeUp 0.8s ease forwards; animation-delay:0.1s;
+  }
+  .eyebrow::before{
+    content:''; width:8px; height:8px; border-radius:50%;
+    background:var(--green); animation:pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(76,175,125,0.5);}
+    50%{box-shadow:0 0 0 6px rgba(76,175,125,0);}
+  }
+  h1{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:clamp(38px, 5vw, 68px);
+    line-height:1.08;
+    margin:18px 0 22px;
+    opacity:0; animation:fadeUp 0.8s ease forwards; animation-delay:0.25s;
+  }
+  h1 .accent{color:var(--gold); font-style:italic;}
+  .hero-sub{
+    font-size:17px; line-height:1.7; color:rgba(237,231,217,0.7);
+    max-width:520px; margin-bottom:36px;
+    opacity:0; animation:fadeUp 0.8s ease forwards; animation-delay:0.4s;
+  }
+  .hero-sub b{color:var(--paper); font-weight:600;}
+  .cta-row{
+    display:flex; gap:16px;
+    opacity:0; animation:fadeUp 0.8s ease forwards; animation-delay:0.55s;
+  }
+  .btn{
+    padding:14px 28px; border-radius:6px; font-size:14px; font-weight:600;
+    text-decoration:none; font-family:var(--sans); transition:all 0.25s ease;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn-primary{
+    background:var(--gold); color:var(--ink); border:1px solid var(--gold);
+  }
+  .btn-primary:hover{background:transparent; color:var(--gold); transform:translateY(-2px);}
+  .btn-ghost{
+    border:1px solid var(--line); color:var(--paper);
+  }
+  .btn-ghost:hover{border-color:var(--gold); color:var(--gold); transform:translateY(-2px);}
+
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(18px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  /* ---------- LEDGER (signature element) ---------- */
+  .ledger{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:10px;
+    font-family:var(--mono);
+    font-size:12.5px;
+    overflow:hidden;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);
+    opacity:0; animation:fadeUp 0.8s ease forwards; animation-delay:0.3s;
+  }
+  .ledger-head{
+    display:flex; align-items:center; gap:8px;
+    padding:12px 16px; border-bottom:1px solid var(--line);
+    background:rgba(255,255,255,0.02);
+  }
+  .dot{width:9px; height:9px; border-radius:50%;}
+  .dot.r{background:#e5605a;} .dot.y{background:#e5b45a;} .dot.g{background:#4CAF7D;}
+  .ledger-title{color:rgba(237,231,217,0.5); font-size:11px; margin-left:6px;}
+  .ledger-body{padding:16px; min-height:280px;}
+  .ledger-line{
+    display:flex; gap:10px; padding:6px 0;
+    border-bottom:1px dashed rgba(237,231,217,0.06);
+    opacity:0;
+  }
+  .ledger-line .tag{color:var(--green); flex-shrink:0;}
+  .ledger-line .path{color:var(--gold-dim); flex-shrink:0;}
+  .ledger-line .msg{color:rgba(237,231,217,0.85);}
+  .cursor{display:inline-block; width:7px; height:14px; background:var(--gold); animation:blink 1s step-end infinite; vertical-align:middle;}
+  @keyframes blink{50%{opacity:0;}}
+
+  /* ---------- SECTION SHARED ---------- */
+  section{padding:120px 6vw;}
+  .section-label{
+    font-family:var(--mono); color:var(--gold); font-size:13px;
+    letter-spacing:2px; text-transform:uppercase; margin-bottom:14px;
+  }
+  .section-title{
+    font-family:var(--serif); font-size:clamp(28px,3vw,42px); font-weight:600;
+    margin-bottom:50px; max-width:700px;
+  }
+  .reveal{opacity:0; transform:translateY(30px); transition:opacity 0.7s ease, transform 0.7s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ---------- ABOUT ---------- */
+  #about{background:var(--ink-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .about-grid{display:grid; grid-template-columns:1fr 1fr; gap:70px; align-items:start;}
+  .about-text p{font-size:16px; line-height:1.85; color:rgba(237,231,217,0.75); margin-bottom:18px;}
+  .about-text b{color:var(--paper);}
+  .stack-list{display:flex; flex-wrap:wrap; gap:10px; margin-top:28px;}
+  .stack-item{
+    font-family:var(--mono); font-size:12.5px; padding:8px 14px;
+    border:1px solid var(--line); border-radius:20px; color:rgba(237,231,217,0.8);
+    transition:all 0.25s;
+  }
+  .stack-item:hover{border-color:var(--gold); color:var(--gold); transform:translateY(-2px);}
+  .stat-block{border-left:2px solid var(--gold); padding-left:22px; margin-bottom:34px;}
+  .stat-num{font-family:var(--serif); font-size:44px; color:var(--gold); font-weight:600; line-height:1;}
+  .stat-label{font-family:var(--mono); font-size:12px; color:rgba(237,231,217,0.55); margin-top:8px; letter-spacing:0.5px;}
+
+  /* ---------- PROJECTS ---------- */
+  .project-row{
+    display:grid; grid-template-columns:60px 1fr auto; gap:24px; align-items:center;
+    padding:26px 0; border-bottom:1px solid var(--line);
+    transition:padding-left 0.3s ease, background 0.3s ease;
+    cursor:pointer;
+  }
+  .project-row:hover{padding-left:14px; background:rgba(212,162,76,0.03);}
+  .project-num{font-family:var(--mono); color:var(--gold-dim); font-size:14px;}
+  .project-name{font-family:var(--serif); font-size:24px; font-weight:600; margin-bottom:8px;}
+  .project-desc{font-size:14.5px; color:rgba(237,231,217,0.6); max-width:520px; line-height:1.6;}
+  .project-tags{display:flex; gap:8px; margin-top:10px;}
+  .project-tags span{
+    font-family:var(--mono); font-size:11px; color:var(--green);
+    border:1px solid rgba(76,175,125,0.3); padding:3px 9px; border-radius:12px;
+  }
+  .project-arrow{
+    font-size:22px; color:var(--gold); opacity:0; transform:translateX(-8px);
+    transition:all 0.3s ease;
+  }
+  .project-row:hover .project-arrow{opacity:1; transform:translateX(0);}
+
+  /* ---------- CONTACT ---------- */
+  #contact{
+    background:var(--ink-2); border-top:1px solid var(--line);
+    text-align:center;
+  }
+  #contact .section-title{margin:0 auto 20px; }
+  #contact p{color:rgba(237,231,217,0.65); font-size:16px; max-width:480px; margin:0 auto 40px;}
+  .contact-links{display:flex; gap:18px; justify-content:center; flex-wrap:wrap;}
+
+  footer{
+    padding:30px 6vw; text-align:center; font-family:var(--mono);
+    font-size:12px; color:rgba(237,231,217,0.35); border-top:1px solid var(--line);
+  }
+
+  @media (max-width:860px){
+    .hero-grid{grid-template-columns:1fr;}
+    .about-grid{grid-template-columns:1fr;}
+    .nav-links{display:none;}
+    .project-row{grid-template-columns:40px 1fr;}
+    .project-arrow{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><span>samreen</span>@koondhar</div>
+  <ul class="nav-links">
+    <li><a href="#about">about</a></li>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+</nav>
+
+<header>
+  <div class="hero-grid">
+    <div>
+      <div class="eyebrow">available for opportunities</div>
+      <h1>Building the backend<br>rails that move <span class="accent">money</span>,<br>safely.</h1>
+      <p class="hero-sub">I'm <b>Samreen Koondhar</b>, an Associate Software Engineer building enterprise fintech systems — payment processing, digital wallets, and real-time transfer rails. I work where <b>Java</b> meets <b>money</b>.</p>
+      <div class="cta-row">
+        <a href="#projects" class="btn btn-primary">View Projects →</a>
+        <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+      </div>
+    </div>
+
+    <div class="ledger">
+      <div class="ledger-head">
+        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        <div class="ledger-title">activity_log.sh — live</div>
+      </div>
+      <div class="ledger-body" id="ledgerBody"></div>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <div class="section-label">Who I Am</div>
+      <div class="section-title" style="margin-bottom:24px;">Backend engineer with a fintech habit.</div>
+      <p>I work on <b>enterprise financial applications</b> — the kind where a misplaced decimal or a missing column breaks something real. My days are spent in <b>Spring Boot</b> services, <b>Hibernate</b> mappings, and <b>Oracle SQL</b>, tracing bugs down to the exact query that caused them.</p>
+      <p>I'm not the person who builds the REST APIs from scratch — I'm the one who <b>integrates and hardens</b> them, closes the gaps, and makes sure they hold up in production. I've picked up frontend work along the way too: <b>Vaadin</b>, <b>React</b>, and the occasional React Native fix.</p>
+      <p>Outside of feature work, I care about writing code I could hand to someone else and trust they'd understand it — no tribal knowledge required.</p>
+      <div class="stack-list">
+        <div class="stack-item">Java</div>
+        <div class="stack-item">Spring Boot</div>
+        <div class="stack-item">Hibernate / JPA</div>
+        <div class="stack-item">Oracle SQL</div>
+        <div class="stack-item">Vaadin</div>
+        <div class="stack-item">React</div>
+        <div class="stack-item">React Native</div>
+        <div class="stack-item">REST Integration</div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="stat-block">
+        <div class="stat-num">1.5<span style="font-size:22px;">yrs</span></div>
+        <div class="stat-label">PROFESSIONAL EXPERIENCE</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-num">3+</div>
+        <div class="stat-label">PRODUCTION FINTECH SYSTEMS SHIPPED TO</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-num">Karachi</div>
+        <div class="stat-label">PAKISTAN — OPEN TO REMOTE</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-label reveal">Selected Work</div>
+  <div class="section-title reveal">Things I've built.</div>
+
+  <div class="project-list">
+    <div class="project-row reveal">
+      <div class="project-num">01</div>
+      <div>
+        <div class="project-name">Hotel Reservation System</div>
+        <div class="project-desc">A booking and room-management system with role-based access, built to model real-world reservation workflows end to end.</div>
+        <div class="project-tags"><span>Java</span><span>Spring Boot</span><span>SQL</span></div>
+      </div>
+      <div class="project-arrow">→</div>
+    </div>
+    <div class="project-row reveal">
+      <div class="project-num">02</div>
+      <div>
+        <div class="project-name">Student Grade System</div>
+        <div class="project-desc">A grading and records platform for managing student data, computed results, and structured academic reporting.</div>
+        <div class="project-tags"><span>Java</span><span>OOP</span><span>MySQL</span></div>
+      </div>
+      <div class="project-arrow">→</div>
+    </div>
+    <div class="project-row reveal">
+      <div class="project-num">03</div>
+      <div>
+        <div class="project-name">Quiz System</div>
+        <div class="project-desc">An interactive quiz engine with scoring logic and category-based question handling.</div>
+        <div class="project-tags"><span>Java</span><span>Collections</span></div>
+      </div>
+      <div class="project-arrow">→</div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-label reveal">Get In Touch</div>
+  <div class="section-title reveal">Let's talk about what you're building.</div>
+  <p class="reveal">Open to Associate / Junior Java backend roles. I reply quickly.</p>
+  <div class="contact-links reveal">
+    <a href="https://www.linkedin.com/in/samreen-koondhar-4636b1301/" target="_blank" class="btn btn-primary">LinkedIn →</a>
+    <a href="mailto:samreenkoondhar@123gmail.com" class="btn btn-ghost">Email Me</a>
+  </div>
+</section>
+
+<footer>© 2026 Samreen Koondhar — built with care, not a template.</footer>
+
+<script>
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+  }, {threshold:0.15});
+  reveals.forEach(el=>observer.observe(el));
+
+  // Ledger typing animation (signature element)
+  const logs = [
+    {tag:'[FIX]', path:'TransactionLog.java', msg:'resolved OutOfMemoryError on bulk export'},
+    {tag:'[FIX]', path:'SMSConfiguration.java', msg:'patched ORA-00904 missing column'},
+    {tag:'[ADD]', path:'TransactionLog.entity', msg:'added IBAN field across export + UI'},
+    {tag:'[FIX]', path:'Application.java', msg:'unified startup — role tree now loads'},
+    {tag:'[DEPLOY]', path:'BackOffice-UI', msg:'shipped PCMS + DCMS to staging'},
+    {tag:'[REFACTOR]', path:'useApi.hook.js', msg:'unified client on shared ApiClient'},
+  ];
+
+  const body = document.getElementById('ledgerBody');
+  let i = 0;
+
+  function typeLine(){
+    if(i >= logs.length){
+      setTimeout(()=>{ body.innerHTML=''; i=0; typeLine(); }, 2200);
+      return;
+    }
+    const log = logs[i];
+    const line = document.createElement('div');
+    line.className = 'ledger-line';
+    line.style.opacity = 1;
+    const full = `<span class="tag">${log.tag}</span><span class="path">${log.path}</span><span class="msg"></span>`;
+    line.innerHTML = full;
+    body.appendChild(line);
+    const msgSpan = line.querySelector('.msg');
+    let c = 0;
+    const txt = log.msg;
+    const typer = setInterval(()=>{
+      msgSpan.textContent = txt.slice(0, c) + '';
+      c++;
+      if(c > txt.length){
+        clearInterval(typer);
+        i++;
+        setTimeout(typeLine, 450);
+      }
+    }, 18);
+  }
+  typeLine();
+</script>
+
+</body>
+</html>
